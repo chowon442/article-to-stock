@@ -21,6 +21,7 @@ def analyze(url):
 
     # 뉴스 기사 여부 확인
     is_news_article = data.get("is_news_article", False)
+    print(is_news_article, type(is_news_article))
     if not is_news_article:
         print(f"제공된 URL이 단일 뉴스 기사가 아닙니다. 처리를 건너뜁니다.")
         return {
@@ -106,6 +107,7 @@ def analyze(url):
             print(f"거래소 정보 없음: {cleaned_cp}")
 
     final_result = {
+        "is_news_article": data.get("is_news_article", False),
         "article": article_data,
         "companies": result
     }
