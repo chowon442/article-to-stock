@@ -1,7 +1,9 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from b import analyze
+import uvicorn
 
 app = FastAPI()
 
@@ -22,3 +24,7 @@ async def analyze_news(request: Request):
         return {"received_url": url, "status": "failed", "message": "LLM 분석 실패 또는 잘못된 응답입니다."}
     else:
         return {"received_url": url, "status": "success", "result": result}
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
