@@ -3,9 +3,9 @@ import json
 
 URL = "https://openrouter.ai/api/v1/chat/completions"
 HEADERS = {
-    "Authorization": "Bearer <api keys>",
+    "Authorization": "Bearer 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",
     "Content-Type": "application/json"
-}
+}   
 
 def report(url):
     try:
