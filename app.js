@@ -11,6 +11,7 @@ const resultsGrid = document.getElementById('results-grid');
 const articleContent = document.getElementById('article-content');
 const skeletonArticle = document.getElementById('skeleton-article');
 const loadingGridSkeletons = document.getElementById('loading-grid-skeletons');
+const notNewsSection = document.getElementById('not-news-section');
 
 // HTML 태그 제거 함수
 function stripHtmlTags(str) {
@@ -104,6 +105,11 @@ function startAnalysis() {
     
     // 기사 내용 영역 숨김
     articleContent.classList.add('hidden');
+    
+    // 뉴스 기사가 아닌 경우 섹션 숨김
+    if (notNewsSection) {
+        notNewsSection.classList.add('hidden');
+    }
 
     // 로딩 UI 표시
     showLoading();
@@ -133,17 +139,28 @@ async function fetchArticleContent(url) {
             // 성공적으로 분석된 경우
             apiResponseData = data.result;
             
-            // 기사 내용 표시
-            if (apiResponseData.article) {
-                displayArticleContent(url, apiResponseData.article);
+            // is_news_article 확인
+            if (apiResponseData.is_news_article === false) {
+                // 뉴스 기사가 아닌 경우
+                setTimeout(() => {
+                    hideLoading();
+                    showNotNewsMessage();
+                    finishAnalysis();
+                }, 1000);
+            } else {
+                // 뉴스 기사인 경우
+                // 기사 내용 표시
+                if (apiResponseData.article) {
+                    displayArticleContent(url, apiResponseData.article);
+                }
+                
+                // 결과 표시
+                setTimeout(() => {
+                    hideLoading();
+                    showResults();
+                    finishAnalysis();
+                }, 1000);
             }
-            
-            // 결과 표시
-            setTimeout(() => {
-                hideLoading();
-                showResults();
-                finishAnalysis();
-            }, 1000);
             
         } else {
             // 분석 실패한 경우
@@ -295,6 +312,25 @@ function createCompanyCard(company, index) {
     return card;
 }
 
+// 뉴스 기사가 아닌 경우 메시지 표시
+function showNotNewsMessage() {
+    if (notNewsSection) {
+        notNewsSection.classList.remove('hidden');
+        notNewsSection.classList.add('fade-in');
+    }
+    
+    // 초기화 버튼 표시
+    resetBtn.classList.remove('hidden');
+}
+
+// 뉴스 기사가 아닌 경우 메시지 숨김
+function hideNotNewsMessage() {
+    if (notNewsSection) {
+        notNewsSection.classList.add('hidden');
+        notNewsSection.classList.remove('fade-in');
+    }
+}
+
 // 결과 숨김
 function hideResults() {
     resultsSection.classList.add('hidden');
@@ -321,6 +357,7 @@ function handleReset() {
     
     hideResults();
     hideLoading();
+    hideNotNewsMessage();
     
     // 입력 필드 초기화
     urlInput.value = '';
