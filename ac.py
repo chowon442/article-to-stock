@@ -14,7 +14,7 @@ if not OPENROUTER_API_KEY:
 HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_API_KEY}",
     "Content-Type": "application/json"
-}   
+}
 
 def report(url):
     try:
@@ -22,11 +22,7 @@ def report(url):
         res.raise_for_status()
         page_text = res.text
     except Exception as e:
-<<<<<<< HEAD
         print(f"페이지 가져오기 실패: {e}")
-=======
-        print(e)
->>>>>>> 63e5c367bfda01c088a140be1c1d89460a64cdc3
         return -1
 
     example = json.dumps({
@@ -46,12 +42,10 @@ def report(url):
             {
                 "role": "system",
                 "content": (
-                    "너는 금융 애널리스트야. 사용자가 제공한 뉴스 본문에서 뉴스 제목을 추출하고, 해당 본문을 'article.content'에, 제목을 'article.title'에 넣어줘. "
-<<<<<<< HEAD
-                    "뉴스 본문 안 '주식회사'들을 모두 추출하여 'companies' 배열에 기존과 동일한 JSON 형식으로 리포트를 출력해. (주식회사 외에 기업은 추출하지 말아줘. 예를 들어 '경기도' 등은 회사, 기업이 아니니까 추출하면 안돼)"
-=======
-                    "뉴스 본문 안 주식회사들을 모두 추출하여 'companies' 배열에 기존과 동일한 JSON 형식으로 리포트를 출력해. "
->>>>>>> 63e5c367bfda01c088a140be1c1d89460a64cdc3
+                    "너는 금융 애널리스트야. 사용자가 제공한 내용을 분석해서 다음과 같이 처리해줘:\n"
+                    "1. 먼저 제공된 내용이 단일 뉴스 기사 본문인지 판단해. 만약 메인 페이지, 목록 페이지, 여러 뉴스가 섞인 내용, 또는 단일 뉴스 기사가 아닌 경우라면 'is_news_article'을 false로 설정하고 'article.title'에는 'null'을 넣어줘.\n"
+                    "2. 단일 뉴스 기사 본문이 맞다면 'is_news_article'을 true로 설정하고, 뉴스 제목을 추출하여 'article.title'에, 본문을 'article.content'에 넣어줘.\n"
+                    "3. 뉴스 본문 안 '주식회사'들을 모두 추출하여 'companies' 배열에 기존과 동일한 JSON 형식으로 리포트를 출력해. (주식회사 외에 기업은 추출하지 말아줘. 예를 들어 '경기도' 등은 회사, 기업이 아니니까 추출하면 안돼. '애플파크'처럼 장소명이나 조직명은 추출하지마)\n"
                     "특히, 'impact' 필드는 반드시 명시된 '긍정적', '단기 긍정적', '부정적', '단기 부정적' 값 중 하나로만 채워야 해. 다른 값은 절대 허용되지 않아.\n예시:\n" + example
                 )
             },
@@ -68,6 +62,10 @@ def report(url):
                 "schema": {
                     "type": "object",
                     "properties": {
+                        "is_news_article": {
+                            "type": "boolean",
+                            "description": "제공된 내용이 단일 뉴스 기사 본문인지 여부"
+                        },
                         "article": {
                             "type": "object",
                             "properties": {
@@ -106,7 +104,7 @@ def report(url):
                             }
                         }
                     },
-                    "required": ["article", "companies"],
+                    "required": ["is_news_article", "article", "companies"],
                     "additionalProperties": False
                 }
             }
@@ -114,7 +112,6 @@ def report(url):
     })
 
     try:
-<<<<<<< HEAD
         print("API 요청 시작...")
         response = requests.post(url=URL, headers=HEADERS, data=found_data)
         print(f"API 응답 상태 코드: {response.status_code}")
@@ -174,22 +171,3 @@ def report(url):
     except Exception as e:
         print(f"응답 처리 중 에러: {e}")
         return -1
-=======
-        response = requests.post(url=URL, headers=HEADERS, data=found_data)
-        response.raise_for_status()
-    except Exception as e:
-        print(e)
-        return -1
-
-    if response.status_code != 200:
-        print(response.status_code)
-        return -1
-    else:
-        content = response.json()['choices'][0]['message']['content']
-        print(content)
-        if isinstance(content, str):
-            return json.loads(content)
-        else:
-            return content
-    
->>>>>>> 63e5c367bfda01c088a140be1c1d89460a64cdc3

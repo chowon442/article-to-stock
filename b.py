@@ -19,6 +19,15 @@ def analyze(url):
         print(f"LLM 분석 실패 또는 잘못된 응답입니다.")
         return -1
 
+    # 뉴스 기사 여부 확인
+    is_news_article = data.get("is_news_article", False)
+    if not is_news_article:
+        print(f"제공된 URL이 단일 뉴스 기사가 아닙니다. 처리를 건너뜁니다.")
+        return {
+            "article": {"title": "null", "content": "단일 뉴스 기사가 아님"},
+            "companies": []
+        }
+
     article_data = data.get("article", {"title": "", "content": ""})
     companies_data = data.get("companies", [])
 
