@@ -4,9 +4,7 @@ from datetime import datetime
 
 def analyze(url):
 
-    raw_list = []
     result = []
-
     clean_list = []
     today = datetime.today().strftime("%Y%m%d")
     data = report(url)
@@ -15,11 +13,10 @@ def analyze(url):
         print (f"LLM 분석 실패 또는 잘못된 응답입니다.")
         exit()
 
-    for d in data:
-        d_name = d.get("name")
-        raw_list.append(d_name)
+    for item in data:
+        cp = item["name"]
+        comment = item["comment"]
 
-    for cp in raw_list:
         for marker in ["(주)", "(유)","(재)", "(사)", "주식회사", "㈜" ]:
             cp = cp.replace(marker, '')
         clean_list.append(cp.strip())
@@ -36,5 +33,5 @@ def analyze(url):
                 row = status.iloc[0]
                 changes = float(row["등락률"])
                 arrow = "▲" if changes > 0 else "▼"
-                result.append({"name":company, "code":code, "final_price":float(row['종가']), "changes":f"{arrow} {changes:.2f}%"})
+                result.append({"name":company, "code":code, "final_price":float(row['종가']), "changes":f"{arrow} {changes:.2f}%", "comment":comment})
     return result 
