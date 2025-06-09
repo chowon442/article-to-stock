@@ -52,7 +52,7 @@ def report(url):
                             },
                             "comment": {
                                 "type": "string",
-                                "description": "뉴스기사에 대해 긍정,부정 평가 및 향후 전망 분석 코멘트, 50자 이내"
+                                "description": "뉴스기사에 대해 기업의 긍정,부정 평가 및 향후 전망 분석 코멘트, 50자 이내"
                             }
                         },
                         "required": ["name", "comment"],
