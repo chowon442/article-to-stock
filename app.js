@@ -140,8 +140,8 @@ async function fetchArticleContent(url) {
             apiResponseData = data.result;
             
             // is_news_article 확인
-            if (apiResponseData.is_news_article === false) {
-                // 뉴스 기사가 아닌 경우
+            if (apiResponseData.is_news_article !== true) {
+                // 뉴스 기사가 아닌 경우 (false, undefined, null 등 모든 경우)
                 setTimeout(() => {
                     hideLoading();
                     showNotNewsMessage();

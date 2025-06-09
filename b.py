@@ -24,6 +24,7 @@ def analyze(url):
     if not is_news_article:
         print(f"제공된 URL이 단일 뉴스 기사가 아닙니다. 처리를 건너뜁니다.")
         return {
+            "is_news_article": False,
             "article": {"title": "null", "content": "단일 뉴스 기사가 아님"},
             "companies": []
         }
