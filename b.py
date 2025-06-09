@@ -37,6 +37,4 @@ def analyize(url):
                 changes = float(row["등락률"])
                 arrow = "▲" if changes > 0 else "▼"
                 result.append({"name":company, "code":code, "final_price":float(row['종가']), "changes":f"{arrow} {changes:.2f}%"})
-
-    print (result)
     return result 
