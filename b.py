@@ -2,7 +2,7 @@ from ac import report
 from pykrx import stock
 from datetime import datetime
 
-def analyize(url):
+def analyze(url):
 
     raw_list = []
     result = []
