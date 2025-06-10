@@ -1,7 +1,12 @@
+import time
 from b import analyze
 
 url = input("주식 정보가 필요한 url을 입력하세요:")
+start_time = time.time()
 result = analyze(url)
+end_time = time.time()
+execution_time = end_time - start_time
+print(f"analyze 함수 실행 시간: {execution_time:.2f} 초")
 
 if result == -1:
     print("LLM 분석 실패 또는 잘못된 응답입니다.")

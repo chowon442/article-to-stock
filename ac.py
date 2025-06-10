@@ -2,6 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -17,6 +18,7 @@ HEADERS = {
 }
 
 def report(url):
+    start_time = time.time()
     try:
         res = requests.get(url)
         res.raise_for_status()
@@ -24,6 +26,8 @@ def report(url):
     except Exception as e:
         print(f"페이지 가져오기 실패: {e}")
         return -1
+    end_time = time.time()
+    print(f"페이지 가져오기 시간: {end_time - start_time:.2f} 초")
 
     example = json.dumps({
         "article": {
@@ -37,7 +41,7 @@ def report(url):
     })
 
     found_data = json.dumps({
-        "model": "meta-llama/llama-4-maverick:free",
+        "model": "deepseek/deepseek-r1-0528:free",
         "messages": [
             {
                 "role": "system",
@@ -111,6 +115,7 @@ def report(url):
         }
     })
 
+    start_time = time.time()
     try:
         print("API 요청 시작...")
         response = requests.post(url=URL, headers=HEADERS, data=found_data)
@@ -124,10 +129,11 @@ def report(url):
     except Exception as e:
         print(f"API 요청 중 에러 발생: {e}")
         return -1
+    end_time = time.time()
+    print(f"API 응답 처리 시간: {end_time - start_time:.2f} 초")
 
     try:
         response_json = response.json()
-        print(f"API 응답 JSON: {response_json}")
         
         if 'choices' not in response_json:
             print(f"API 응답에 'choices' 키가 없습니다. 응답 키들: {list(response_json.keys())}")

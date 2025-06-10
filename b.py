@@ -1,3 +1,4 @@
+import json
 from ac import report
 from pykrx import stock
 from datetime import datetime, timedelta
@@ -21,7 +22,6 @@ def analyze(url):
 
     # 뉴스 기사 여부 확인
     is_news_article = data.get("is_news_article", False)
-    print(is_news_article, type(is_news_article))
     if not is_news_article:
         print(f"제공된 URL이 단일 뉴스 기사가 아닙니다. 처리를 건너뜁니다.")
         return {
@@ -46,12 +46,20 @@ def analyze(url):
 
     # 한국 거래소 데이터 로드
     try:
-        code_name_map = {code: stock.get_market_ticker_name(code)
-            for code in stock.get_market_ticker_list(market="ALL")}
-    except Exception as e:
-        print(f"주식 데이터 로드 실패: {e}")
+        # code_name_map = {code: stock.get_market_ticker_name(code)
+        #     for code in stock.get_market_ticker_list(market="ALL")}
+        with open('stock.json', 'r', encoding='utf-8') as f:
+            code_name_map = json.load(f)
+        print("stock.json 파일 로드 성공.")
+    except FileNotFoundError:
+        print("stock.json 파일을 찾을 수 없습니다. 빈 맵으로 초기화합니다.")
         code_name_map = {}
-
+    except json.JSONDecodeError:
+        print("stock.json 파일 파싱 실패. 빈 맵으로 초기화합니다.")
+        code_name_map = {}
+    except Exception as e:
+        print(f"주식 데이터 로드 실패: {e}. 빈 맵으로 초기화합니다.")
+        code_name_map = {}
     print(f"processed_companies: {processed_companies}")
 
     result = []
