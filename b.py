@@ -1,5 +1,5 @@
-from ac import report
-from pykrx import stock
+from ac import report # 기사 URL 기업 추출 함수 호출
+from pykrx import stock # 한국 주식시장 api
 from datetime import datetime, timedelta
 
 def analyze(url):
