@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뉴스 기업 영향 분석</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">뉴스 기업 영향 분석 서비스</h1>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main">
+        <div class="container">
+            <!-- 입력 영역 -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="url-input" class="sr-only">뉴스 링크 URL</label>
+                    <input type="url" id="url-input" class="form-control url-input"
+                        placeholder="분석을 원하는 링크 주소를 입력하세요..." aria-describedby="url-help">
+                    <div class="button-group">
+                        <button type="button" id="analyze-btn" class="btn btn--primary">
+                            분석 시작
+                        </button>
+                        <button type="button" id="reset-btn" class="btn btn--outline reset-btn hidden">
+                            결과 초기화
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 로딩 영역 -->
+            <div id="loading-section" class="loading-section hidden">
+                <div class="loading-grid" id="loading-grid-skeletons">
+                    <!-- 스켈레톤 카드들이 여기에 동적으로 추가됩니다 -->
+                </div>
+
+                <!-- 기사 내용 스켈레톤 -->
+                <div class="skeleton-article hidden" id="skeleton-article">
+                    <div class="skeleton-article-title"></div>
+                    <div class="skeleton-article-url"></div>
+                    <div class="skeleton-article-content">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line short"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 뉴스 기사가 아닌 경우 알림 영역 -->
+            <div id="not-news-section" class="not-news-section hidden">
+                <div class="not-news-card">
+                    <div class="not-news-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V11M12 15H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="not-news-title">단일 뉴스 기사가 아닙니다</h3>
+                    <p class="not-news-description">
+                        제공된 URL이 단일 뉴스 기사가 아닌 것으로 판단됩니다.<br>
+                        메인 페이지, 목록 페이지, 또는 여러 뉴스가 섞인 페이지일 수 있습니다.
+                    </p>
+                    <div class="not-news-suggestions">
+                        <h4>다음과 같은 경우에 이 메시지가 나타날 수 있습니다:</h4>
+                        <ul>
+                            <li>신문사 메인 페이지</li>
+                            <li>뉴스 목록 페이지</li>
+                            <li>카테고리별 뉴스 페이지</li>
+                            <li>검색 결과 페이지</li>
+                            <li>개별 뉴스 기사가 아닌 페이지</li>
+                        </ul>
+                    </div>
+                    <div class="not-news-action">
+                        <p><strong>해결 방법:</strong> 분석하고자 하는 개별 뉴스 기사의 직접 링크를 입력해 주세요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 결과 영역 -->
+            <div id="results-section" class="results-section hidden">
+                <div class="results-grid" id="results-grid">
+                </div>
+
+                <!-- 기사 내용 표시 영역 -->
+                <div class="article-content hidden" id="article-content">
+                    <h2 class="article-content__title">기사 내용</h2>
+                    <div class="article-content__url" id="article-url"></div>
+                    <div class="article-content__text" id="article-text"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>기초프로그래밍 수업 - 팀프로젝트 (나준원, 윤호준, 박수현)</p>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
