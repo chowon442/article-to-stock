@@ -37,7 +37,7 @@ def report(url):
     })
 
     found_data = json.dumps({
-        "model": "deepseek/deepseek-r1-0528:free",
+        "model": "meta-llama/llama-4-maverick:free",
         "messages": [
             {
                 "role": "system",
