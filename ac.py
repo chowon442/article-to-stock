@@ -41,7 +41,7 @@ def report(url):
     })
 
     found_data = json.dumps({
-        "model": "deepseek/deepseek-r1-0528:free",
+        "model": "google/gemini-2.0-flash-exp:free",
         "messages": [
             {
                 "role": "system",
