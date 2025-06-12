@@ -6,14 +6,14 @@ import time
 
 load_dotenv()
 
-URL = "https://openrouter.ai/api/v1/chat/completions"
+XAI_API_URL = "https://api.x.ai/v1/chat/completions"
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-if not OPENROUTER_API_KEY:
-    raise ValueError("OPENROUTER_API_KEY 설정 없음.")
+XAI_API_KEY = os.getenv("XAI_API_KEY")
+if not XAI_API_KEY:
+    raise ValueError("XAI_API_KEY 설정 없음.")
 
 HEADERS = {
-    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    "Authorization": f"Bearer {XAI_API_KEY}",
     "Content-Type": "application/json"
 }
 
@@ -30,6 +30,7 @@ def report(url):
     print(f"페이지 가져오기 시간: {end_time - start_time:.2f} 초")
 
     example = json.dumps({
+        "is_news_article": True,
         "article": {
             "title": "샘플 기사 제목",
             "content": "이것은 샘플 기사 내용입니다. 실제 구현에서는 입력된 URL의 기사 내용이 여기에 표시됩니다."
@@ -40,8 +41,8 @@ def report(url):
         ]
     })
 
-    found_data = json.dumps({
-        "model": "deepseek/deepseek-r1-0528:free",
+    payload = {
+        "model": "grok-3-mini",
         "messages": [
             {
                 "role": "system",
@@ -113,13 +114,13 @@ def report(url):
                 }
             }
         }
-    })
+    }
 
     start_time = time.time()
     try:
-        print("API 요청 시작...")
-        response = requests.post(url=URL, headers=HEADERS, data=found_data)
-        print(f"API 응답 상태 코드: {response.status_code}")
+        print("XAI Grok API 요청 시작...")
+        response = requests.post(url=XAI_API_URL, headers=HEADERS, json=payload)
+        print(f"XAI Grok API 응답 상태 코드: {response.status_code}")
         
         if response.status_code != 200:
             print(f"API 요청 실패. 상태 코드: {response.status_code}")
@@ -127,10 +128,10 @@ def report(url):
             return -1
             
     except Exception as e:
-        print(f"API 요청 중 에러 발생: {e}")
+        print(f"XAI Grok API 요청 중 에러 발생: {e}")
         return -1
     end_time = time.time()
-    print(f"API 응답 처리 시간: {end_time - start_time:.2f} 초")
+    print(f"XAI Grok API 응답 처리 시간: {end_time - start_time:.2f} 초")
 
     try:
         response_json = response.json()
